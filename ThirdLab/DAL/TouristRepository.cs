@@ -49,7 +49,7 @@ namespace ThirdLab.DAL
         }
 
         private bool disposed = false;
-        protected virtual void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (!disposed)
             {

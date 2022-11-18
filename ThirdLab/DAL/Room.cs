@@ -16,7 +16,7 @@ namespace ThirdLab.DAL
         public int RoomId { get; set; }
         public bool IsTaken { get; set; }
         public bool IsBooked { get; set; }
-        public Category? Category { get; set; }
+        public Category Category { get; set; }
         public DateTime[,]? BookedDates { get; set; }
         public virtual ICollection<Tourist>? Tourists { get; set; }
     }

@@ -4,20 +4,20 @@ namespace ThirdLab.DAL
 {
     public class UnitOfWork:IUnitOfWork
     {
-        private HotelContext context = new HotelContext();
-        private IRepository<Room> roomRepository;
-        private IRepository<Tourist> touristRepository;
+        private HotelContext _context = new HotelContext();
+        private IRepository<Room> _roomRepository;
+        private IRepository<Tourist> _touristRepository;
 
         public RoomRepository Rooms
         {
             get
             {
-                if (roomRepository==null)
+                if (_roomRepository==null)
                 {
-                    roomRepository = new RoomRepository(context);
+                    _roomRepository = new RoomRepository(_context);
                 }
 
-                return (RoomRepository)roomRepository;
+                return (RoomRepository)_roomRepository;
             }
         }
         
@@ -25,18 +25,18 @@ namespace ThirdLab.DAL
         {
             get
             {
-                if (touristRepository==null)
+                if (_touristRepository==null)
                 {
-                    touristRepository= new TouristRepository(context);
+                    _touristRepository= new TouristRepository(_context);
                 }
 
-                return (TouristRepository)touristRepository;
+                return (TouristRepository)_touristRepository;
             }
         }
 
         public void Save()
         {
-            context.SaveChanges();
+            _context.SaveChanges();
         }
 
         private bool disposed = false;
@@ -46,7 +46,7 @@ namespace ThirdLab.DAL
             {
                 if (disposing)
                 {
-                    context.Dispose();
+                    _context.Dispose();
                 }
             }
 
