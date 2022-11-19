@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using ThirdLab.DAL;
 
 namespace ThirdLab.BLL
@@ -12,14 +13,14 @@ namespace ThirdLab.BLL
         {
             _unitOfWork = unitOfWork;
         }
-        public List<Room> ReturnRoomsAtPrice()
+        public List<Room> ReturnRoomsAtPrice(Category category)
         {
-            throw new NotImplementedException();
+            return _unitOfWork.Rooms.GetAll().Where(c => c.Category == category).ToList();
         }
 
         public void BookRoom(Room room, DateTime[,] dates, Tourist tourist)
         {
-            throw new NotImplementedException();
+            
         }
 
         public List<Room> FindFreeRoomForDate(DateTime[,] dates)

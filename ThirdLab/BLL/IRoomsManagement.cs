@@ -6,7 +6,7 @@ namespace ThirdLab.BLL
 {
     public interface IRoomsManagement
     {
-        public List<Room> ReturnRoomsAtPrice();
+        public List<Room> ReturnRoomsAtPrice(Category category);
 
         public void BookRoom(Room room, DateTime[,] dates, Tourist tourist);
 
