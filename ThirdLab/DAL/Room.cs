@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 
 namespace ThirdLab.DAL
@@ -14,10 +15,9 @@ namespace ThirdLab.DAL
     public class Room
     {
         public int RoomId { get; set; }
-        public bool IsTaken { get; set; }
-        public bool IsBooked { get; set; }
         public Category Category { get; set; }
-        public DateTime[,]? BookedDates { get; set; }
+        public DateTime[] StartBookedDates { get; set; }
+        public DateTime[] FinallBookedDates { get; set; }
         public virtual ICollection<Tourist>? Tourists { get; set; }
     }
 }

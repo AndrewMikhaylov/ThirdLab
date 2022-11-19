@@ -25,12 +25,33 @@ namespace ThirdLab.BLL
 
         public List<Room> FindFreeRoomForDate(DateTime[,] dates)
         {
-            throw new NotImplementedException();
+            if (dates[0,0]> dates[0,1])
+            {
+                throw new ArgumentOutOfRangeException(nameof(dates));
+            }
+
+            var rooms = _unitOfWork.Rooms.GetAll().Where(r => RoomChecker(r, dates)).ToList();
+
+            return rooms;
         }
 
         public void PayForRoomNow(Room room, DateTime[,] dates, Tourist tourist)
         {
             throw new NotImplementedException();
+        }
+
+        private bool RoomChecker(Room room, DateTime[,] dates)
+        {
+            int i = 0;
+            foreach (DateTime startDate in room.StartBookedDates)
+            {
+                if (startDate<=dates[0,0] && room.FinallBookedDates[i]>=dates[1,0])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

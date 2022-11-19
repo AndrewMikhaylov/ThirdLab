@@ -13,5 +13,6 @@ namespace ThirdLab.BLL
         public List<Room> FindFreeRoomForDate(DateTime[,] dates);
 
         public void PayForRoomNow(Room room, DateTime[,] dates, Tourist tourist);
+        
     }
 }
