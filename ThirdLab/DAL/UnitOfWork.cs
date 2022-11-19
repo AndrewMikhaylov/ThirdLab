@@ -8,7 +8,7 @@ namespace ThirdLab.DAL
         private IRepository<Room> _roomRepository;
         private IRepository<Tourist> _touristRepository;
 
-        public RoomRepository Rooms
+        public IRepository<Room> Rooms
         {
             get
             {
@@ -17,11 +17,11 @@ namespace ThirdLab.DAL
                     _roomRepository = new RoomRepository(_context);
                 }
 
-                return (RoomRepository)_roomRepository;
+                return _roomRepository;
             }
         }
         
-        public TouristRepository Tourists
+        public IRepository<Tourist> Tourists
         {
             get
             {
@@ -30,7 +30,7 @@ namespace ThirdLab.DAL
                     _touristRepository= new TouristRepository(_context);
                 }
 
-                return (TouristRepository)_touristRepository;
+                return _touristRepository;
             }
         }
 

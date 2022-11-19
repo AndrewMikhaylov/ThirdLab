@@ -7,6 +7,7 @@ namespace ThirdLab
     {
         static void Main(string[] args)
         {
+            UnitOfWork unit = new UnitOfWork();
             
         }
     }
