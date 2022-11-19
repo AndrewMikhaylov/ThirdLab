@@ -47,25 +47,5 @@ namespace ThirdLab.DAL
         {
             context.SaveChanges();
         }
-
-        private bool disposed = false;
-        protected void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-
-            disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
     }
 }
