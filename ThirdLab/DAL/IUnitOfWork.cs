@@ -7,5 +7,6 @@ namespace ThirdLab.DAL
         public void Save();
         public IRepository<Tourist> Tourists { get;}
         public IRepository<Room> Rooms { get;}
+        public IRepository<DatesToStay> DatesToStay { get; }
     }
 }

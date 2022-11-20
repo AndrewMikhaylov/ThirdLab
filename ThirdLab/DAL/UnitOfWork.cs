@@ -4,9 +4,10 @@ namespace ThirdLab.DAL
 {
     public class UnitOfWork:IUnitOfWork
     {
-        private HotelContext _context = new HotelContext();
+        private HotelContext _context;
         private IRepository<Room> _roomRepository;
         private IRepository<Tourist> _touristRepository;
+        private IRepository<DatesToStay> _datesRepository;
 
         public IRepository<Room> Rooms
         {
@@ -20,7 +21,20 @@ namespace ThirdLab.DAL
                 return _roomRepository;
             }
         }
-        
+
+        public IRepository<DatesToStay> DatesToStay
+        {
+            get
+            {
+                if (_datesRepository==null)
+                {
+                    _datesRepository = new DatesRepository(_context);
+                }
+
+                return _datesRepository;
+            }
+        }
+
         public IRepository<Tourist> Tourists
         {
             get

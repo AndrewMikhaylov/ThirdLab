@@ -18,34 +18,90 @@ namespace ThirdLab.BLL
             return _unitOfWork.Rooms.GetAll().Where(c => c.Category == category).ToList();
         }
 
-        public void BookRoom(Room room, DateTime[,] dates, Tourist tourist)
+        public void BookRoom(Room room, DatesToStay dates, Tourist tourist)
         {
-            
+            if (!_unitOfWork.Rooms.GetAll().ToList().Contains(room))
+            {
+                throw new ArgumentOutOfRangeException("room");
+            }
+            if (!RoomChecker(room,dates))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            dates.Room = room;
+            dates.Tourist = tourist;
+            _unitOfWork.DatesToStay.Update(dates);
+            tourist.Room = room;
+            tourist.DatesToStay = dates;
+            tourist.PayedForRoom = false;
+            _unitOfWork.Tourists.Update(tourist);
+            room.IsBooked = true;
+            room.Tourists.Add(tourist);
+            room.DatesToStay.Add(dates);
+            _unitOfWork.Rooms.Update(room);
+            _unitOfWork.Save();
+
         }
 
-        public List<Room> FindFreeRoomForDate(DateTime[,] dates)
+        public List<Room> FindFreeRoomForDate(DatesToStay dates)
         {
-            if (dates[0,0]> dates[0,1])
+            if (dates.StartBookedDates > dates.FinallBookedDates)
             {
                 throw new ArgumentOutOfRangeException(nameof(dates));
             }
 
-            var rooms = _unitOfWork.Rooms.GetAll().Where(r => RoomChecker(r, dates)).ToList();
-
-            return rooms;
+            return _unitOfWork.Rooms.GetAll().Where(r => RoomChecker(r, dates)).ToList();
         }
 
-        public void PayForRoomNow(Room room, DateTime[,] dates, Tourist tourist)
+        public void PayForRoomOnBooking(Room room, DatesToStay dates, Tourist tourist)
         {
-            throw new NotImplementedException();
+            if (!_unitOfWork.Rooms.GetAll().ToList().Contains(room))
+            {
+                throw new ArgumentOutOfRangeException("room");
+            }
+
+            if (!RoomChecker(room,dates))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            dates.Room = room;
+            dates.Tourist = tourist;
+            _unitOfWork.DatesToStay.Update(dates);
+            tourist.PayedForRoom = true;
+            tourist.DatesToStay = dates;
+            tourist.Room = room;
+            _unitOfWork.Tourists.Update(tourist);
+            room.IsTaken = true;
+            room.IsBooked = true;
+            room.Tourists.Add(tourist);
+            room.DatesToStay.Add(dates);
+            _unitOfWork.Rooms.Update(room);
+            _unitOfWork.Save();
         }
 
-        private bool RoomChecker(Room room, DateTime[,] dates)
+        public void PayForRoomAfterBooking(Tourist tourist)
+        {
+            if (!_unitOfWork.Tourists.GetAll().ToList().Contains(tourist))
+            {
+                throw new ArgumentOutOfRangeException("tourist");
+            }
+
+            tourist.PayedForRoom = true;
+            _unitOfWork.Tourists.Update(tourist);
+            tourist.Room.IsTaken = true;
+            _unitOfWork.Rooms.Update(tourist.Room);
+            _unitOfWork.Save();
+        }
+
+
+        private bool RoomChecker(Room room, DatesToStay dates)
         {
             int i = 0;
-            foreach (DateTime startDate in room.StartBookedDates)
+            foreach (DatesToStay datesToStay in room.DatesToStay)
             {
-                if (startDate<=dates[0,0] && room.FinallBookedDates[i]>=dates[1,0])
+                if (datesToStay.StartBookedDates<=dates.StartBookedDates && datesToStay.FinallBookedDates>=dates.FinallBookedDates)
                 {
                     return false;
                 }
