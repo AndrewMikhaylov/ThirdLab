@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using ThirdLab.DAL;
-
+using Ninject;
 namespace ThirdLab.BLL
 {
     public class RoomsManagement : IRoomsManagement
     {
-        private IUnitOfWork _unitOfWork;
-
-        public RoomsManagement(IUnitOfWork unitOfWork)
+        private readonly IUnitOfWork _unitOfWork;
+        public RoomsManagement()
         {
-            _unitOfWork = unitOfWork;
+            IKernel ninjectKernel = new StandardKernel();
+            ninjectKernel.Bind<IUnitOfWork>().To<UnitOfWork>();
+            _unitOfWork = ninjectKernel.Get<IUnitOfWork>();
         }
         public List<Room> ReturnRoomsAtPrice(Category category)
         {
@@ -19,8 +20,11 @@ namespace ThirdLab.BLL
             return _unitOfWork.Rooms.GetAll().Where(c => c.Category == category).ToList();
         }
 
-        public void BookRoom(Room room, DatesToStay dates, Tourist tourist)
+        public void BookRoom(int roomId, int datesId, int touristId)
         {
+            var room = _unitOfWork.Rooms.GetById(roomId);
+            var dates = _unitOfWork.DatesToStay.GetById(datesId);
+            var tourist = _unitOfWork.Tourists.GetById(touristId);
             if (!_unitOfWork.Rooms.GetAll().ToList().Contains(room))
             {
                 throw new ArgumentOutOfRangeException("room");
@@ -45,8 +49,9 @@ namespace ThirdLab.BLL
 
         }
 
-        public List<Room> FindFreeRoomForDate(DatesToStay dates)
+        public List<Room> FindFreeRoomForDate(int datesId)
         {
+            var dates = _unitOfWork.DatesToStay.GetById(datesId);
             if (dates.StartBookedDates > dates.FinallBookedDates)
             {
                 throw new ArgumentOutOfRangeException(nameof(dates));
@@ -55,8 +60,11 @@ namespace ThirdLab.BLL
             return _unitOfWork.Rooms.GetAll().Where(r => RoomChecker(r, dates)).ToList();
         }
 
-        public void PayForRoomOnBooking(Room room, DatesToStay dates, Tourist tourist)
+        public void PayForRoomOnBooking(int roomId, int datesId, int touristId)
         {
+            var room = _unitOfWork.Rooms.GetById(roomId);
+            var dates = _unitOfWork.DatesToStay.GetById(datesId);
+            var tourist = _unitOfWork.Tourists.GetById(touristId);
             if (!_unitOfWork.Rooms.GetAll().ToList().Contains(room))
             {
                 throw new ArgumentOutOfRangeException("room");
@@ -82,8 +90,9 @@ namespace ThirdLab.BLL
             _unitOfWork.Save();
         }
 
-        public void PayForRoomAfterBooking(Tourist tourist)
+        public void PayForRoomAfterBooking(int touristId)
         {
+            var tourist = _unitOfWork.Tourists.GetById(touristId);
             if (!_unitOfWork.Tourists.GetAll().ToList().Contains(tourist))
             {
                 throw new ArgumentOutOfRangeException("tourist");

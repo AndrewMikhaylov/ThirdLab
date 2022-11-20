@@ -1,9 +1,10 @@
 ﻿using System;
+using ThirdLab.DAL;
 
 namespace ThirdLab.BLL
 {
     public interface IDatesManager
     {
-        public void SetDates(DateTime start, DateTime finish);
+        public DatesToStay AddDates(DateTime start, DateTime finish);
     }
 }

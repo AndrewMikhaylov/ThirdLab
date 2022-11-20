@@ -41,6 +41,10 @@
             "EntityFramework": {
               "target": "Package",
               "version": "[6.4.4, )"
+            },
+            "Ninject": {
+              "target": "Package",
+              "version": "[3.3.6, )"
             }
           },
           "imports": [

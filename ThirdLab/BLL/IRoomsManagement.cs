@@ -8,12 +8,12 @@ namespace ThirdLab.BLL
     {
         public List<Room> ReturnRoomsAtPrice(Category category);
 
-        public void BookRoom(Room room, DatesToStay dates, Tourist tourist);
+        public void BookRoom(int roomId, int datesId, int touristId);
 
-        public List<Room> FindFreeRoomForDate(DatesToStay dates);
+        public List<Room> FindFreeRoomForDate(int datesId);
 
-        public void PayForRoomOnBooking(Room room, DatesToStay dates, Tourist tourist);
+        public void PayForRoomOnBooking(int roomId, int datesId, int touristId);
 
-        public void PayForRoomAfterBooking(Tourist tourist);
+        public void PayForRoomAfterBooking(int touristId);
     }
 }

@@ -1,7 +1,9 @@
-﻿namespace ThirdLab.BLL
+﻿using ThirdLab.DAL;
+
+namespace ThirdLab.BLL
 {
     public interface ITouristManager
     {
-        public void CreateTourist(string fullName);
+        public Tourist CreateTourist(string fullName);
     }
 }

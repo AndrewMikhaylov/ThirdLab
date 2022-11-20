@@ -1,12 +1,28 @@
 ﻿using System;
+using Ninject;
+using ThirdLab.DAL;
 
 namespace ThirdLab.BLL
 {
     public class DatesManager : IDatesManager
     {
-        public void SetDates(DateTime start, DateTime finish)
+        private IUnitOfWork _unitOfWork;
+        DatesManager(IUnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            IKernel ninjectKernel = new StandardKernel();
+            ninjectKernel.Bind<IUnitOfWork>().To<UnitOfWork>();
+            _unitOfWork = ninjectKernel.Get<IUnitOfWork>();
+        }
+        public DatesToStay AddDates(DateTime start, DateTime finish)
+        {
+            DatesToStay datesToStay = new DatesToStay
+            {
+                StartBookedDates = start,
+                FinallBookedDates = finish
+            };
+            _unitOfWork.DatesToStay.Create(datesToStay);
+            _unitOfWork.Save();
+            return datesToStay;
         }
     }
 }
