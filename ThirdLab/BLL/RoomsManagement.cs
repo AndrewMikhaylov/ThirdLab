@@ -15,6 +15,7 @@ namespace ThirdLab.BLL
         }
         public List<Room> ReturnRoomsAtPrice(Category category)
         {
+            
             return _unitOfWork.Rooms.GetAll().Where(c => c.Category == category).ToList();
         }
 
