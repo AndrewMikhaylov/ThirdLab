@@ -25,23 +25,16 @@ namespace ThirdLab.BLL
             var room = _unitOfWork.Rooms.GetById(roomId);
             var dates = _unitOfWork.DatesToStay.GetById(datesId);
             var tourist = _unitOfWork.Tourists.GetById(touristId);
-            if (!_unitOfWork.Rooms.GetAll().ToList().Contains(room))
+            if (!_unitOfWork.Rooms.GetAll().ToList().Contains(room) || !RoomChecker(room,dates))
             {
                 throw new ArgumentOutOfRangeException("room");
             }
-            if (!RoomChecker(room,dates))
-            {
-                throw new ArgumentOutOfRangeException();
-            }
 
             dates.Room = room;
-            dates.Tourist = tourist;
             _unitOfWork.DatesToStay.Update(dates);
             tourist.Room = room;
-            tourist.DatesToStay = dates;
             tourist.PayedForRoom = false;
             _unitOfWork.Tourists.Update(tourist);
-            room.IsBooked = true;
             room.Tourists.Add(tourist);
             room.DatesToStay.Add(dates);
             _unitOfWork.Rooms.Update(room);
@@ -65,25 +58,16 @@ namespace ThirdLab.BLL
             var room = _unitOfWork.Rooms.GetById(roomId);
             var dates = _unitOfWork.DatesToStay.GetById(datesId);
             var tourist = _unitOfWork.Tourists.GetById(touristId);
-            if (!_unitOfWork.Rooms.GetAll().ToList().Contains(room))
+            if (!_unitOfWork.Rooms.GetAll().ToList().Contains(room) || !RoomChecker(room,dates))
             {
                 throw new ArgumentOutOfRangeException("room");
             }
-
-            if (!RoomChecker(room,dates))
-            {
-                throw new ArgumentOutOfRangeException();
-            }
-
             dates.Room = room;
-            dates.Tourist = tourist;
             _unitOfWork.DatesToStay.Update(dates);
             tourist.PayedForRoom = true;
             tourist.DatesToStay = dates;
             tourist.Room = room;
             _unitOfWork.Tourists.Update(tourist);
-            room.IsTaken = true;
-            room.IsBooked = true;
             room.Tourists.Add(tourist);
             room.DatesToStay.Add(dates);
             _unitOfWork.Rooms.Update(room);
@@ -100,7 +84,6 @@ namespace ThirdLab.BLL
 
             tourist.PayedForRoom = true;
             _unitOfWork.Tourists.Update(tourist);
-            tourist.Room.IsTaken = true;
             _unitOfWork.Rooms.Update(tourist.Room);
             _unitOfWork.Save();
         }

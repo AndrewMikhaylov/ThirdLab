@@ -1,4 +1,5 @@
-﻿using Ninject;
+﻿using System.Linq;
+using Ninject;
 using ThirdLab.DAL;
 
 namespace ThirdLab.BLL
@@ -12,15 +13,16 @@ namespace ThirdLab.BLL
             ninjectKernel.Bind<IUnitOfWork>().To<UnitOfWork>();
             _unitOfWork = ninjectKernel.Get<IUnitOfWork>();
         }
-        public Tourist CreateTourist(string fullName)
+        public int CreateTourist(string fullName)
         {
             Tourist tourist = new Tourist
             {
-                FullName = fullName
+                FullName = fullName,
+                TouristId = _unitOfWork.Tourists.GetAll().ToList().Count
             };
             _unitOfWork.Tourists.Create(tourist);
             _unitOfWork.Save();
-            return tourist;
+            return tourist.TouristId;
         }
     }
 }

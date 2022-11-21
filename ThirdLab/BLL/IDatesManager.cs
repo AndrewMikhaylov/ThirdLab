@@ -5,6 +5,6 @@ namespace ThirdLab.BLL
 {
     public interface IDatesManager
     {
-        public DatesToStay AddDates(DateTime start, DateTime finish);
+        public int AddDates(DateTime start, DateTime finish, int touristId);
     }
 }
